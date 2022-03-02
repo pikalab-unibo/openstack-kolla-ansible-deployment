@@ -11,5 +11,10 @@ RUN mkdir -p /etc/kolla
 RUN cp -r /usr/local/share/kolla-ansible/etc_examples/kolla/* /etc/kolla
 WORKDIR /root
 RUN cp /usr/local/share/kolla-ansible/ansible/inventory/* .
-# USER $user
+RUN mkdir -p .ssh
+RUN kolla-genpwd
+COPY ansible.cfg /etc/ansible/
+COPY id_rsa* .ssh/
+RUN chmod 0400 .ssh/id_rsa*
+COPY multinode .
 CMD /bin/bash
