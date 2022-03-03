@@ -14,11 +14,9 @@ WORKDIR /root
 RUN cp /usr/local/share/kolla-ansible/ansible/inventory/* .
 RUN kolla-genpwd
 COPY home/ /root/
-# assumes .password file is mounted in /root
-# ENV ANSIBLE_VALUT_PWD '--vault-password-file /root/.password/value' 
-# ENV ANSIBLE_EXTRA_OPTS "--extra-vars \"@secrets.yml\" $ANSIBLE_VALUT_PWD"
+RUN echo 'eval $(ssh-agent -s)' >> .bashrc
+RUN echo 'ansible localhost -m command -a "sshpass -P passphrase -p {{ passphrase }} ssh-add .ssh/id_rsa" -e "@secrets.yml"' >> .bashrc
 CMD /usr/local/bin/ansible-vault decrypt .ssh/id_rsa*; \
     /usr/local/bin/ansible -i test.ini all -m ansible.builtin.debug -a 'msg={{ ansible_host, ansible_user, ansible_password, ansible_become_pass  }}' -e "@secrets.yml"; \
     /bin/bash
-# $ANSIBLE_VALUT_PWD; /bin/bash
 # ansible -i test.ini all -m ping -e "@secrets.yml"
