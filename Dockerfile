@@ -14,6 +14,7 @@ WORKDIR /root
 RUN cp /usr/local/share/kolla-ansible/ansible/inventory/* .
 RUN kolla-genpwd
 COPY home/ /root/
+COPY etc/kolla/ /etc/kolla/
 RUN echo 'eval $(ssh-agent -s)' >> .bashrc
 RUN echo 'ansible localhost -m command -a "sshpass -P passphrase -p {{ passphrase }} ssh-add .ssh/id_rsa" -e "@secrets.yml"' >> .bashrc
 CMD /usr/local/bin/ansible-vault decrypt .ssh/id_rsa*; \
