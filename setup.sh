@@ -15,7 +15,7 @@ SECRETS_FILE=home/secrets.yml
 PRIVATE_KEY_FILE=home/.ssh/id_rsa
 PUBLIC_KEY_FILE=home/.ssh/id_rsa.pub
 
-echo $PASSWORD > PASSWORD_FILE
+echo $PASSWORD > $PASSWORD_FILE
 ansible-vault encrypt_string -n user $USER_NAME --vault-pass-file $PASSWORD_FILE > $SECRETS_FILE
 ansible-vault encrypt_string -n password $USER_PASSWORD --vault-pass-file $PASSWORD_FILE >> $SECRETS_FILE
 ansible-vault encrypt_string -n passphrase $PASSPHRASE --vault-pass-file $PASSWORD_FILE >> $SECRETS_FILE
