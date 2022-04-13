@@ -16,6 +16,7 @@ RUN kolla-genpwd
 COPY home/ /root/
 COPY etc/kolla/ /etc/kolla/
 RUN echo 'eval $(ssh-agent -s)' >> .bashrc
+# RUN echo 'function runall() { ansible -i test.ini all -m command -a "$@" -e "@secrets.yml" }' >> .bashrc
 RUN echo 'ansible localhost -m command -a "sshpass -P passphrase -p {{ passphrase }} ssh-add .ssh/id_rsa" -e "@secrets.yml"' >> .bashrc
 CMD /usr/local/bin/ansible-vault decrypt .ssh/id_rsa*; \
     /usr/local/bin/ansible -i test.ini all -m ansible.builtin.debug -a 'msg={{ ansible_host, ansible_user, ansible_password, ansible_become_pass  }}' -e "@secrets.yml"; \
