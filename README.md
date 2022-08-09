@@ -18,4 +18,6 @@
 6. Call `run.sh`
     - this should start a container, install Ansible and Kolla, set up keys accordingly, and finally open a shell
 
-7. Call `install-openstack.sh` on that shell
+7. Call `preconfigure-openstack.sh` on that shell
+
+8. Call `deploy-install.sh`
